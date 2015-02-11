@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 __author__ = 'torresmateo'
 
 from spanish_constants import *

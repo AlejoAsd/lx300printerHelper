@@ -2,44 +2,44 @@
 #-*- coding: utf-8 -*-
 __author__ = 'torresmateo'
 from escpos import *
-from lx300printer.document import Document
-from lx300printer.field import Field
-from flask import Flask
-from flask import render_template
-
-app = Flask(__name__)
+from lx300printer.json_document import JsonDocument
+from flask import Flask, render_template, request
 import json
 
-documento = Document()
-documento.document_width = 95
-documento.add_field(Field("prueba", 0, 0))
-documento.add_field(Field("prueba", 0, 1))
-documento.add_field(Field("prueba", 0, 2))
-documento.add_field(Field("prueba", 0, 3))
-#documento.add_field(Field("pruebaasd", 0, 4))
-documento.add_field(Field("-" * 94, 0, 4))
-# documento.add_field(Field("prueba", 5, 1))
-# documento.add_field(Field("prueba", 7, 2))
-# documento.add_field(Field("prueba", 87, 3))
-# documento.add_field(Field("-" * 94, 0, 7))
+app = Flask(__name__)
 
 @app.route("/print/", methods=['POST'])
-def magic_please():
-    personId = int(request.form['personId'])
-    epson = printer.Usb(0x04b8, 0x0046)
-    epson.set(codepage='iso8859_9', font='c')
+def print_document():
+    json_str = str(request.form['text'])
+    response_str = "Your printer should be making some noise!!"
+    try:
+        epson = printer.Usb(0x04b8, 0x0046)
+        epson.set(codepage='iso8859_9', font='c')
+        if "verbatim" in request.form.keys():
+            epson._raw(json_str)
+        else:
+            document = JsonDocument(json_str)
+            epson._raw(document.get_printable_string())
+    except Exception, e:
+        response_str = "Error: " + str(e)
+    finally:
+        try:
+            epson.close()
+        except NameError:
+            pass
 
-    epson._raw(documento.get_printable_string())
+    return response_str
 
-    epson.close()
-
-    return "Imprimiste!!"
-
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def hello():
-    return render_template('index.html')
+    if "text" in request.form.keys():
+        json_str = request.form["text"]
+        document = JsonDocument(json_str)
+        return render_template('preview.html', text=document.get_printable_string(), json_str=json.dumps(json_str))
+    else:
+        return render_template('index.html')
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=52738)

@@ -1,8 +1,8 @@
 #!/usr/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 __author__ = 'torresmateo'
 
-#http://www.dig-it.de/download/manuals/epson_TM-T88III_technical_reference.pdf page 84
+# http://www.dig-it.de/download/manuals/epson_TM-T88III_technical_reference.pdf page 84
 spanish_characters = {
     'ñ': '\xa4',
     'á': '\xa0',

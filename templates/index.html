@@ -5,14 +5,43 @@
     <title>lx300 printer</title>
 </head>
 <body>
-    <form action="{{ url_for('print') }}" method=post>
+    <form action="{{ url_for('hello') }}" method=post>
         <dl>
-            <dt>Username:
-            <dd><input type=text name=username>
-            <dt>Password:
-            <dd><input type=password name=password>
-            <dd><input type=submit value=Login>
+            <dt>Texto:</dt>
+            <dd><textarea placeholder="JSON Here" cols="95" rows="20" name="text"></textarea></dd>
+            <dd><input type="checkbox" name="verbatim">Print as Text (ignore json)</dd>
+            <!--dt>Password:</dt>
+            <dd><input type="password" name="password"></dd-->
+            <dd><input type="submit" value="Print"></dd>
         </dl>
     </form>
+
+    <h1>JSON Example</h1>
+    <pre>
+{
+    "document_width":95,
+    "fields": [
+        {
+            "text": "hola",
+            "x": 1,
+            "y": 0,
+            "length": 4
+        },
+        {
+            "text": "chau",
+            "x": 1,
+            "y": 2,
+            "length": 4
+        },
+        {
+            "text": "asdfkjan",
+            "x": 1,
+            "y": 2,
+            "_comment" : "length of text",
+            "length": null
+        }
+    ]
+}
+    </pre>
 </body>
 </html>

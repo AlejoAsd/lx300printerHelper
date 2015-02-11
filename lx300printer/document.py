@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 __author__ = 'torresmateo'
 
 from spanish_constants import *
@@ -11,8 +13,8 @@ class Document():
         for field in self.field_collection.values():
             #si el campo nuevo esta metido en el espacio ocupado por otro campo
             if field.y == candidate_field.y and \
-               (field.x < candidate_field.x < field.x + field.length or
-                 field.x < candidate_field.x + candidate_field.length < field.x + field.length):
+               (field.x <= candidate_field.x <= field.x + field.length or
+                 field.x <= candidate_field.x + candidate_field.length <= field.x + field.length):
                 return False
         return True
 
@@ -20,7 +22,7 @@ class Document():
     def check_width(self, candidate_field):
         return candidate_field.x + candidate_field.length < self.document_width
 
-    def add_field(self, field, ignore_collisions = False):
+    def add_field(self, field, ignore_collisions=False):
         if self.check_width(field):
             if ignore_collisions:
                 self.field_collection[field.get_index(self.document_width)] = field
