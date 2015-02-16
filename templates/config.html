@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Configuration</title>
+</head>
+<body>
+    <h1>Select the correct printer</h1>
+    <table>
+        {% for key, product in dev.iteritems() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ product }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
