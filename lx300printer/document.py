@@ -48,7 +48,7 @@ class Document():
                 if i % self.document_width == 0:
                     printable_string += '\n'
                 else:
-                    printable_string += '.'
+                    printable_string += ' '
                 current_index += 1
             #agregar el texto del campo
             if current_index % self.document_width == 0:

@@ -19,7 +19,7 @@ class JsonDocument(Document):
 
 
 if __name__ == "__main__":
-    json_str = '''
+    json_str_x = '''
 {
     "document_width":95,
     "fields": [
@@ -44,5 +44,5 @@ if __name__ == "__main__":
     ]
 }
 '''
-    json_doc = JsonDocument(json_str)
+    json_doc = JsonDocument(json_str_x)
     print json_doc.get_printable_string()
