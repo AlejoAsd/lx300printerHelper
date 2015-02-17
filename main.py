@@ -15,17 +15,17 @@ app = Flask(__name__)
 def print_document():
     json_str = str(request.form['text'])
     response_str = "Your printer should be making some noise!!"
-    hola = open("hola.txt", "w")
+    print_fp = open("print.txt", "w")
     try:
 
         if platform.system() == 'Windows':
             if "verbatim" in request.form.keys():
-                hola.write(json_str)
+                print_fp.write(json_str)
             else:
                 document = JsonDocument(json_str)
-                hola.write(document.get_printable_string())
-            hola.close()
-            os.system('RawPrinterConsole')
+                print_fp.write(document.get_printable_string())
+            print_fp.close()
+            os.system('RawPrinterConsole print.txt')
         else:
             epson = printer.Usb(0x3f0, 0x102a)
             epson.set(codepage='iso8859_9', font='c')
