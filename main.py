@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
 __author__ = 'torresmateo'
+from escpos import *
+import platform
 from lx300printer.json_document import JsonDocument
 from flask import Flask, render_template, request, redirect, url_for
 import json
@@ -15,18 +17,35 @@ def print_document():
     response_str = "Your printer should be making some noise!!"
     hola = open("hola.txt", "w")
     try:
-        if "verbatim" in request.form.keys():
-            hola.write(json_str)
+
+        if platform.system() == 'Windows':
+            if "verbatim" in request.form.keys():
+                hola.write(json_str)
+            else:
+                document = JsonDocument(json_str)
+                hola.write(document.get_printable_string())
+            hola.close()
+            os.system('RawPrinterConsole')
         else:
-            document = JsonDocument(json_str)
-            hola.write(document.get_printable_string())
-        hola.close()
-        os.system('RawPrinterConsole')
-        print "asdasdasd"
+            epson = printer.Usb(0x3f0, 0x102a)
+            epson.set(codepage='iso8859_9', font='c')
+            if "verbatim" in request.form.keys():
+                epson._raw(json_str)
+            else:
+                document = JsonDocument(json_str)
+                epson._raw(document.get_printable_string())
     except Exception, e:
         response_str = "Error: " + str(e)
+    finally:
+        try:
+            epson.close()
+        except NameError:
+            pass
 
     return response_str
+
+
+
 
 @app.route("/", methods=['POST', 'GET'])
 def hello():
