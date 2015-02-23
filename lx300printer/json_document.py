@@ -13,7 +13,7 @@ class JsonDocument(Document):
     def __init__(self, json_str):
         self.json_object = json.loads(json_str)
         for field in self.json_object["fields"]:
-            self.add_field(Field(str(field["text"]), field["x"], field["y"], field["length"]))
+            self.add_field(Field(str(field["text"].encode('utf8')), field["x"], field["y"], field["length"]))
         if "document_width" in self.json_object:
             self.document_width = self.json_object["document_width"]
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     "document_width":95,
     "fields": [
         {
-            "text": "hola",
+            "text": "hñla",
             "x": 1,
             "y": 0,
             "length": 4
@@ -45,4 +45,4 @@ if __name__ == "__main__":
 }
 '''
     json_doc = JsonDocument(json_str_x)
-    print json_doc.get_printable_string()
+    print json_doc.get_printable_string().encode('utf8')

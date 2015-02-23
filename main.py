@@ -4,7 +4,7 @@ __author__ = 'torresmateo'
 from escpos import *
 import platform
 from lx300printer.json_document import JsonDocument
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 import json
 import usb.core
 import os
@@ -55,7 +55,12 @@ def hello():
             return redirect(url_for('print_document'), code=307)
         else:
             document = JsonDocument(json_str)
-            return render_template('preview.html', text=document.get_printable_string(), json_str=json.dumps(json_str))
+            print type(document.get_printable_string())
+            # from http://stackoverflow.com/questions/13303464/can-flask-using-jinja2-render-templates-using-windows-1251-encoding
+            r = Response()
+            r.headers['Content-Type'] = 'text/html; charset=utf-8'
+            r.data = render_template('preview.html', text=document.get_printable_string().decode('unicode-escape'), json_str=json.dumps(json_str))
+            return r
     else:
         return render_template('index.html')
 
