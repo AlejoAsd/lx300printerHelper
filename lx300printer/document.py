@@ -38,7 +38,7 @@ class Document():
 
     def get_printable_string(self):
         current_index = 0
-        printable_string = ""
+        printable_string = unicode("")
         sorted_keys = sorted(self.field_collection.keys())
         for key in sorted_keys:
             #obtener el campo
@@ -46,15 +46,15 @@ class Document():
             #rellenar de espacios vacios el string
             for i in range(current_index, field.get_index(self.document_width)):
                 if i % self.document_width == 0:
-                    printable_string += '\n'
+                    printable_string += unicode('\n')
                 else:
-                    printable_string += ' '
+                    printable_string += unicode(' ')
                 current_index += 1
             #agregar el texto del campo
             if current_index % self.document_width == 0:
-                printable_string += '\n'
+                printable_string += unicode('\n')
                 current_index += 1
             printable_string += field.text[:field.length]
             current_index += field.length
-        printable_string += '\n'
+        printable_string += unicode('\n')
         return printable_string
