@@ -22,11 +22,14 @@ def print_document():
 
     if platform.system() == 'Windows':
         if "verbatim" in request.form.keys():
+            json_str = json_str.encode('utf8')
+            for character in spanish_characters:
+                json_str = json_str.replace(character, spanish_characters[character])
             print_fp.write(json_str)
         else:
             document = JsonDocument(json_str)
             print document.get_printable_string()
-            print_fp.write(document.get_printable_string().encode('utf8'))
+            print_fp.write(document.get_printable_string())
         print_fp.close()
         os.system('RawPrinterConsole print.txt')
     else:
@@ -65,8 +68,8 @@ def hello():
             # from http://stackoverflow.com/questions/13303464/can-flask-using-jinja2-render-templates-using-windows-1251-encoding
             r = Response()
             #r.headers['Content-Type'] = 'text/html; charset=utf-8'
-            #r.data = render_template('preview.html', text=document.get_printable_string().decode('unicode-escape'), json_str=json.dumps(json_str))
-            r.data = render_template('preview.html', text=document.get_printable_string(), json_str=json.dumps(json_str))
+            r.data = render_template('preview.html', text=document.main_string, json_str=json.dumps(json_str))
+            #r.data = render_template('preview.html', text=document.get_printable_string().encode('utf8'), json_str=json.dumps(json_str))
             return r
     else:
         return render_template('index.html')

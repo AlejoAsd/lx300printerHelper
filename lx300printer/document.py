@@ -7,6 +7,7 @@ from spanish_constants import *
 class Document():
     field_collection = {}
     document_width = 95
+    main_string = u''
 
     '''detecta las colisiones entre los campos'''
     def check_collisions(self, candidate_field):
@@ -34,11 +35,11 @@ class Document():
                           " colisiona con otro campo"
         else:
             print "Error: el campo con texto: " + field.text + " sobrepasa el ancho del documento"
+        self.update_main_string()
 
-
-    def get_printable_string(self):
+    def update_main_string(self):
         current_index = 0
-        printable_string = unicode("")
+        self.main_string = unicode("")
         sorted_keys = sorted(self.field_collection.keys())
         for key in sorted_keys:
             #obtener el campo
@@ -46,15 +47,21 @@ class Document():
             #rellenar de espacios vacios el string
             for i in range(current_index, field.get_index(self.document_width)):
                 if i % self.document_width == 0:
-                    printable_string += unicode('\n')
+                    self.main_string += unicode('\n')
                 else:
-                    printable_string += unicode(' ')
+                    self.main_string += unicode(' ')
                 current_index += 1
             #agregar el texto del campo
             if current_index % self.document_width == 0:
-                printable_string += unicode('\n')
+                self.main_string += unicode('\n')
                 current_index += 1
-            printable_string += field.text[:field.length]
+            self.main_string += field.text[:field.length]
             current_index += field.length
-        printable_string += unicode('\n')
-        return printable_string
+        self.main_string += unicode('\n')
+
+    def get_printable_string(self):
+        printable_string_bytes = self.main_string.encode('utf8')
+        for character in spanish_characters:
+            printable_string_bytes = printable_string_bytes.replace(character, spanish_characters[character])
+
+        return printable_string_bytes
