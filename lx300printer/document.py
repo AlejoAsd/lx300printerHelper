@@ -5,9 +5,11 @@ __author__ = 'torresmateo'
 from spanish_constants import *
 
 class Document():
-    field_collection = {}
-    document_width = 95
-    main_string = u''
+
+    def __init__(self):
+        self.field_collection = {}
+        self.document_width = 95
+        self.main_string = u''
 
     '''detecta las colisiones entre los campos'''
     def check_collisions(self, candidate_field):

@@ -8,9 +8,9 @@ import json
 
 
 class JsonDocument(Document):
-    json_object = None
 
     def __init__(self, json_str):
+        Document.__init__(self)
         self.json_object = json.loads(json_str)
         for field in self.json_object["fields"]:
             self.add_field(Field(unicode(field["text"]), field["x"], field["y"], field["length"]))

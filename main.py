@@ -63,6 +63,7 @@ def hello():
         if "verbatim" in request.form.keys():
             return redirect(url_for('print_document'), code=307)
         else:
+            document = None
             document = JsonDocument(json_str)
             print type(document.get_printable_string())
             # from http://stackoverflow.com/questions/13303464/can-flask-using-jinja2-render-templates-using-windows-1251-encoding
