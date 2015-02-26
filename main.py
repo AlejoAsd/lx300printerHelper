@@ -88,4 +88,4 @@ def config():
         return render_template('config.html', dev=dev)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=52738)
+    app.run(debug=True, port=52738, host='0.0.0.0')
