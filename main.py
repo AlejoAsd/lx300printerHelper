@@ -18,8 +18,7 @@ def print_document():
     print type(json_str)
     response_str = "Your printer should be making some noise!!"
     print_fp = open("print.txt", "w")
-#try:
-
+    # try:
     if platform.system() == 'Windows':
         if "verbatim" in request.form.keys():
             json_str = json_str.encode('utf8')
@@ -33,7 +32,7 @@ def print_document():
         print_fp.close()
         os.system('RawPrinterConsole print.txt')
     else:
-        epson = printer.Usb(0x4b8, 0x46)
+        epson = printer.Usb(0x4b8, 0x5)
         epson.set(codepage='iso8859_9', font='c')
         if "verbatim" in request.form.keys():
             json_str = json_str.encode('utf8')

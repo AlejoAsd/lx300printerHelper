@@ -49,7 +49,8 @@ class Document():
             #rellenar de espacios vacios el string
             for i in range(current_index, field.get_index(self.document_width)):
                 if i % self.document_width == 0:
-                    self.main_string += unicode('\n')
+                    if i > 0:
+                        self.main_string += unicode('\n')
                 else:
                     self.main_string += unicode(' ')
                 current_index += 1

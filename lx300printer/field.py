@@ -3,11 +3,6 @@
 __author__ = 'torresmateo'
 
 class Field():
-    x = 0
-    y = 0
-    length = 0
-    text = ""
-
     def __init__(self, text, x, y, length=None):
         #si no se establecio la longitud se toma la lingitud del texto
         self.x = x
