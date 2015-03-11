@@ -62,22 +62,27 @@ def hello():
         if "verbatim" in request.form.keys():
             return redirect(url_for('print_document'), code=307)
         else:
-            document = None
             document = JsonDocument(json_str)
             print type(document.get_printable_string())
             # from http://stackoverflow.com/questions/13303464/can-flask-using-jinja2-render-templates-using-windows-1251-encoding
             r = Response()
-            #r.headers['Content-Type'] = 'text/html; charset=utf-8'
             r.data = render_template('preview.html', text=document.main_string, json_str=json.dumps(json_str))
-            #r.data = render_template('preview.html', text=document.get_printable_string().encode('utf8'), json_str=json.dumps(json_str))
             return r
     else:
         return render_template('index.html')
 
 
+def store_config(conf_dict):
+    config_file = open('config.txt', 'W')
+    config_file.write(json.dumps(conf_dict))
+    config_file.close()
+
 @app.route("/config", methods=['POST', 'GET'])
 def config():
     if request.method == 'POST':
+        configuration = {}
+        configuration['printer'] = 'test'
+        store_config(configuration)
         return "Not yet implemented!!"
     else:
         all_devices = usb.core.find(find_all=True)
@@ -87,4 +92,4 @@ def config():
         return render_template('config.html', dev=dev)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=52738)
+    app.run(debug=True, port=52738, host='0.0.0.0')
