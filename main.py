@@ -33,7 +33,7 @@ def print_document():
         print_fp.close()
         os.system('RawPrinterConsole print.txt')
     else:
-        epson = printer.Usb(0x4b8, 0x202)
+        epson = printer.Usb(0x4b8, 0x5)
         epson.set(codepage='iso8859_9', font='c')
         if "verbatim" in request.form.keys():
             json_str = json_str.encode('utf8')
