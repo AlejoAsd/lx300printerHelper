@@ -5,6 +5,7 @@ from escpos import *
 import platform
 from lx300printer.json_document import JsonDocument
 from lx300printer.spanish_constants import *
+from lx300printer.escape_constants import *
 from flask import Flask, render_template, request, redirect, url_for, Response
 import json
 import usb.core
@@ -32,7 +33,7 @@ def print_document():
         print_fp.close()
         os.system('RawPrinterConsole print.txt')
     else:
-        epson = printer.Usb(0x4b8, 0x5)
+        epson = printer.Usb(0x4b8, 0x202)
         epson.set(codepage='iso8859_9', font='c')
         if "verbatim" in request.form.keys():
             json_str = json_str.encode('utf8')
@@ -59,6 +60,8 @@ def print_document():
 def hello():
     if request.method == 'POST':
         json_str = request.form["text"]
+        for character in escape_characters:
+                json_str = json_str.replace(character, escape_characters[character])
         if "verbatim" in request.form.keys():
             return redirect(url_for('print_document'), code=307)
         else:
